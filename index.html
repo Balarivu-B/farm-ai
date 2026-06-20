@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FarmEase AI - Premium Crop Details & Farming Portal</title>
+  <meta name="description" content="Discover detailed guides, ideal growing conditions, and professional farming support at FarmEase AI.">
+  <link rel="stylesheet" href="styles.css">
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Top Glassmorphic Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="logo">
+        <span class="logo-icon">🌿</span> FarmEase AI
+      </div>
+      <nav class="nav-links">
+        <a href="#hero" class="nav-item active" id="nav-home">Home</a>
+        <a href="#about" class="nav-item" id="nav-about">About</a>
+        <a href="#features" class="nav-item" id="nav-features">Features</a>
+        <a href="#contact" class="nav-item" id="nav-contact">Contact</a>
+        <a href="#dashboard" class="nav-item advanced-link" id="nav-dashboard">Dashboard</a>
+      </nav>
+      <div class="user-greeting-panel">
+        <span id="user-greeting" class="user-greeting">Loading...</span>
+        <button id="btn-login-register" class="btn-primary-sm" style="display: none;">Login / Register</button>
+        <button id="btn-reset-session" class="btn-secondary-sm" style="display: none;" title="Logout account">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Landing / Public View -->
+    <div id="landing-view">
+      <!-- Hero Section -->
+      <section id="hero" class="hero-section">
+        <div class="hero-content">
+          <span class="badge">Smart Agriculture</span>
+          <h1>Nurturing the Earth, <br><span class="highlight-text">Empowering Farmers</span></h1>
+          <p>Explore precise crop analytics, ideal growing parameters, and customized farming recommendations. Let's grow together.</p>
+          <div class="hero-actions">
+            <a href="#crop-directory" class="btn-primary">Explore Crops</a>
+            <a href="#registration-section" class="btn-secondary">Get Farming Guide</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI Features Section -->
+      <section id="features" class="features-section">
+        <div class="section-header">
+          <h2>AI-Powered Features</h2>
+          <p>Harness the power of machine learning and modern data analytics to boost your agricultural yield.</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card glass-card">
+            <div class="feature-icon">🌾</div>
+            <h3>Crop Details Hub</h3>
+            <p>Get detailed recommendations on cultivation, fertilizers, irrigation, and ideal harvesting times.</p>
+          </div>
+
+          <div class="feature-card glass-card">
+            <div class="feature-icon">🔍</div>
+            <h3>Disease Detection</h3>
+            <p>Scan and identify crop leaf diseases instantly using our AI-trained computer vision model.</p>
+          </div>
+
+          <div class="feature-card glass-card">
+            <div class="feature-icon">🤖</div>
+            <h3>AI Assistant</h3>
+            <p>Chat with our agro-bot for instant answers to crop health, pesticide selection, and farming tips.</p>
+          </div>
+
+          <div class="feature-card glass-card">
+            <div class="feature-icon">🌦️</div>
+            <h3>Smart Weather</h3>
+            <p>Access live regional weather updates, temperature tracks, humidity levels, and rain forecasts.</p>
+          </div>
+
+          <div class="feature-card glass-card">
+            <div class="feature-icon">📈</div>
+            <h3>Market Prices</h3>
+            <p>Track current crop wholesale rates and market trends to sell your harvest at the best price.</p>
+          </div>
+
+          <div class="feature-card glass-card">
+            <div class="feature-icon">🏛️</div>
+            <h3>Government Schemes</h3>
+            <p>Explore central and state subsidies, financial aids, and support schemes tailored to your farm.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Crop Slider Section -->
+      <section id="crop-directory" class="slider-section">
+        <div class="section-header">
+          <h2>Crop Directory</h2>
+          <p>Select a crop below to view detailed growing insights dynamically.</p>
+        </div>
+
+        <div class="slider-container">
+          <button id="btn-prev" class="slider-nav-btn" aria-label="Previous crop">←</button>
+          
+          <div class="slider-wrapper">
+            <div id="crop-slider" class="crop-slider">
+              <!-- Crop Card 1: Wheat -->
+              <div class="crop-card active" data-crop="wheat" id="card-wheat">
+                <div class="card-image-wrapper">
+                  <img src="images/wheat.png" alt="Golden Wheat Field">
+                </div>
+                <div class="card-info">
+                  <h3>Wheat</h3>
+                  <span class="crop-family">Triticum aestivum</span>
+                </div>
+              </div>
+
+              <!-- Crop Card 2: Rice -->
+              <div class="crop-card" data-crop="rice" id="card-rice">
+                <div class="card-image-wrapper">
+                  <img src="images/rice.png" alt="Lush Rice Paddies">
+                </div>
+                <div class="card-info">
+                  <h3>Rice</h3>
+                  <span class="crop-family">Oryza sativa</span>
+                </div>
+              </div>
+
+              <!-- Crop Card 3: Maize -->
+              <div class="crop-card" data-crop="maize" id="card-maize">
+                <div class="card-image-wrapper">
+                  <img src="images/maize.png" alt="Healthy Corn Stalk">
+                </div>
+                <div class="card-info">
+                  <h3>Maize</h3>
+                  <span class="crop-family">Zea mays</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <button id="btn-next" class="slider-nav-btn" aria-label="Next crop">→</button>
+        </div>
+      </section>
+
+      <!-- Dynamic Crop Details Panel -->
+      <section id="crop-details-panel" class="details-section">
+        <div class="details-container glass-card">
+          <div class="details-header">
+            <h3 id="detail-title">Wheat Details</h3>
+            <span id="detail-subtitle" class="family-tag">Triticum aestivum</span>
+          </div>
+          
+          <div class="details-grid">
+            <div class="detail-item">
+              <span class="detail-label">Watering Schedule</span>
+              <span id="detail-water" class="detail-value">Moderate (4-6 times during lifecycle)</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Ideal Temperature</span>
+              <span id="detail-temp" class="detail-value">15°C – 24°C</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Soil Type</span>
+              <span id="detail-soil" class="detail-value">Well-drained Loamy Soil</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Harvesting Time</span>
+              <span id="detail-harvest" class="detail-value">110 – 140 days after sowing</span>
+            </div>
+          </div>
+
+          <div class="details-body">
+            <p id="detail-description">Wheat is a major global cereal grain. It requires cool weather during the early growth stage followed by warm, sunny conditions for ripening. It is highly sensitive to waterlogging, making loamy soil with good drainage essential.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Inquiry / Registration Form Section -->
+      <section id="registration-section" class="registration-section">
+        <div class="registration-container glass-card">
+          
+          <!-- Form Switch Tabs -->
+          <div class="form-tabs">
+            <button id="tab-login" class="form-tab active">Login</button>
+            <button id="tab-register" class="form-tab">Register</button>
+          </div>
+
+          <!-- Login Form -->
+          <form id="login-form" novalidate>
+            <div class="form-header">
+              <h2>Access Your Portal</h2>
+              <p>Log in with your details to access FarmEase AI features.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="login-name">Full Name</label>
+              <input type="text" id="login-name" placeholder="Enter your full name" class="form-input">
+              <span id="err-login-name" class="error-msg"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="login-email">Email Address</label>
+              <input type="email" id="login-email" placeholder="example@agro.com" class="form-input">
+              <span id="err-login-email" class="error-msg"></span>
+            </div>
+
+            <button type="submit" id="btn-login-submit" class="btn-primary btn-block">Log In</button>
+          </form>
+
+          <!-- Register Form -->
+          <form id="farming-form" class="hidden-form" novalidate>
+            <div class="form-header">
+              <h2>Create An Account</h2>
+              <p>Register to receive customized weather updates and harvest guides.</p>
+            </div>
+
+            <!-- Read-only Registration ID generated randomly -->
+            <div class="form-group">
+              <label for="reg-id">Your Assigned Registration Code</label>
+              <input type="text" id="reg-id" class="form-input readonly-input" readonly>
+              <small class="form-hint">Generated automatically for your safety.</small>
+            </div>
+
+            <div class="form-group">
+              <label for="reg-name">Full Name</label>
+              <input type="text" id="reg-name" placeholder="Enter your full name" class="form-input">
+              <span id="err-name" class="error-msg"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="reg-email">Email Address</label>
+              <input type="email" id="reg-email" placeholder="example@agro.com" class="form-input">
+              <span id="err-email" class="error-msg"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="reg-phone">Phone Number (10 digits)</label>
+              <input type="tel" id="reg-phone" placeholder="9876543210" class="form-input">
+              <span id="err-phone" class="error-msg"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="reg-crop">Preferred Crop for Advice</label>
+              <input type="text" id="reg-crop" placeholder="e.g. Wheat, Potato, Cotton, Carrot" class="form-input">
+              <span id="err-crop" class="error-msg"></span>
+            </div>
+
+            <div class="form-group checkbox-group">
+              <label class="checkbox-container">
+                <input type="checkbox" id="reg-agree">
+                <span class="checkmark"></span>
+                I agree to the organic farming guidelines and privacy terms.
+              </label>
+              <span id="err-agree" class="error-msg block-error"></span>
+            </div>
+
+            <button type="submit" id="btn-submit" class="btn-primary btn-block">Register and Download</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section id="about" class="about-section">
+        <div class="about-container glass-card">
+          <div class="section-header">
+            <h2>About FarmEase AI</h2>
+            <p>Empowering sustainable agriculture globally through smart AI assistance.</p>
+          </div>
+          <div class="about-body text-center">
+            <p>FarmEase AI is a comprehensive agronomy platform designed to help modern growers. We integrate state-of-the-art computer vision models, local weather tracking, chatbot assistance, and mandi market intelligence to provide actionable, real-time advice for farmers, helping them make optimal decisions, maximize yields, and protect crops from infections.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="contact-section">
+        <div class="contact-container glass-card">
+          <div class="section-header">
+            <h2>Contact Support</h2>
+            <p>Connect with our expert agricultural extension coordinators.</p>
+          </div>
+          <div class="contact-grid">
+            <div class="contact-method">
+              <span class="contact-icon">📞</span>
+              <strong>Phone Line</strong>
+              <p>+1 (800) 555-FARM</p>
+            </div>
+            <div class="contact-method">
+              <span class="contact-icon">✉️</span>
+              <strong>Support Email</strong>
+              <p>support@farmease.ai</p>
+            </div>
+            <div class="contact-method">
+              <span class="contact-icon">📍</span>
+              <strong>Coordinates</strong>
+              <p>Green Valley Agricultural Tech Park, Suite 402</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Farmer Dashboard View (Logged In Only) -->
+    <div id="dashboard-view" class="dashboard-view hidden-view">
+      
+      <!-- Dashboard Sidebar -->
+      <aside class="dashboard-sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-avatar">👨‍🌾</div>
+          <h4 id="side-username">Farmer Name</h4>
+        </div>
+        <nav class="sidebar-menu">
+          <button class="menu-item active" data-panel="panel-overview">👤 My Profile</button>
+          <button class="menu-item logout-btn" id="btn-side-logout">🚪 Logout Account</button>
+        </nav>
+      </aside>
+
+      <!-- Dashboard Main Content Area -->
+      <div class="dashboard-content">
+        
+        <!-- Panel 1: Profile Overview -->
+        <div id="panel-overview" class="dashboard-panel active">
+          <div class="registration-container glass-card">
+            <div class="profile-card">
+              <div class="profile-header">
+                <div class="profile-avatar">👨‍🌾</div>
+                <div class="profile-meta">
+                  <h3 id="profile-display-name">Farmer Name</h3>
+                  <span class="profile-badge">Verified Member</span>
+                </div>
+              </div>
+              
+              <div class="profile-details-grid">
+                <div class="profile-detail-item">
+                  <span class="p-label">Registration Code</span>
+                  <strong id="profile-display-id" class="p-value">REG-123456</strong>
+                </div>
+                <div class="profile-detail-item">
+                  <span class="p-label">Preferred Crop</span>
+                  <strong id="profile-display-crop" class="p-value">Wheat</strong>
+                </div>
+                <div class="profile-detail-item">
+                  <span class="p-label">Portal Status</span>
+                  <strong class="p-value status-active">Active</strong>
+                </div>
+                <div class="profile-detail-item">
+                  <span class="p-label">Farming Tier</span>
+                  <strong class="p-value">Premium Member</strong>
+                </div>
+              </div>
+
+              <div class="profile-actions">
+                <button class="btn-primary" id="btn-download-guide">📥 Sowing Guide PDF</button>
+                <button class="btn-secondary" id="btn-profile-logout">Logout Account</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="app-footer" id="app-footer">
+    <p>&copy; 2026 FarmEase AI Inc. Empowering sustainable agriculture globally.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
