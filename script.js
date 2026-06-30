@@ -383,12 +383,32 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --- Crop Directory Slider & Details ---
+  let autoPlayInterval = null;
+
+  function startAutoPlay() {
+    stopAutoPlay();
+    autoPlayInterval = setInterval(() => {
+      // Only advance slide if the landing view is currently visible
+      if (landingView && !landingView.classList.contains("hidden-view")) {
+        let nextIndex = (currentCropIndex + 1) % crops.length;
+        updateCropSlider(nextIndex);
+      }
+    }, 4500);
+  }
+
+  function stopAutoPlay() {
+    if (autoPlayInterval) {
+      clearInterval(autoPlayInterval);
+      autoPlayInterval = null;
+    }
+  }
+
   function updateCropSlider(index) {
     currentCropIndex = index;
     const cropKey = crops[index];
     
-    // Shift Slider
-    cropSlider.style.transform = `translateX(-${index * 100}%)`;
+    // Shift Slider dynamically based on the percentage of total cards
+    cropSlider.style.transform = `translateX(-${index * (100 / crops.length)}%)`;
 
     // Toggle active card
     cropCards.forEach((card, i) => {
@@ -415,18 +435,31 @@ document.addEventListener("DOMContentLoaded", () => {
   btnNext.addEventListener("click", () => {
     let nextIndex = (currentCropIndex + 1) % crops.length;
     updateCropSlider(nextIndex);
+    startAutoPlay(); // Reset timer on interaction
   });
 
   btnPrev.addEventListener("click", () => {
     let prevIndex = (currentCropIndex - 1 + crops.length) % crops.length;
     updateCropSlider(prevIndex);
+    startAutoPlay(); // Reset timer on interaction
   });
 
   cropCards.forEach((card, idx) => {
     card.addEventListener("click", () => {
       updateCropSlider(idx);
+      startAutoPlay(); // Reset timer on interaction
     });
   });
+
+  // Pause autoplay on mouse hover over the slider container
+  const sliderContainer = document.querySelector(".slider-container");
+  if (sliderContainer) {
+    sliderContainer.addEventListener("mouseenter", stopAutoPlay);
+    sliderContainer.addEventListener("mouseleave", startAutoPlay);
+  }
+
+  // Start the autoplay cycle initially
+  startAutoPlay();
 
   // --- Form Switch Tabs ---
   function switchFormTab(tab) {
