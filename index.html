@@ -12,6 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- Toast Container -->
+  <div id="toast-container" class="toast-container"></div>
 
   <!-- Top Glassmorphic Navigation -->
   <header class="app-header">
@@ -316,6 +318,7 @@
         </div>
         <nav class="sidebar-menu">
           <button class="menu-item active" data-panel="panel-overview">👤 My Profile</button>
+          <button class="menu-item" data-panel="panel-alerts" id="btn-side-alerts">🔔 Crop Alerts & Events <span class="badge-dot"></span></button>
           <button class="menu-item logout-btn" id="btn-side-logout">🚪 Logout Account</button>
         </nav>
       </aside>
@@ -357,6 +360,40 @@
               <div class="profile-actions">
                 <button class="btn-primary" id="btn-download-guide">📥 Sowing Guide PDF</button>
                 <button class="btn-secondary" id="btn-profile-logout">Logout Account</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Crop Alerts & Events -->
+        <div id="panel-alerts" class="dashboard-panel">
+          <div class="registration-container glass-card" style="max-width: 100%; padding: 2rem 2.5rem;">
+            <div class="form-header" style="text-align: left; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-glass); padding-bottom: 1rem;">
+              <h2>🔔 Crop Alerts & Events</h2>
+              <p>Real-time updates and advisory calendar customized for your farm.</p>
+            </div>
+            
+            <div class="alerts-grid">
+              <!-- Active Alerts Card -->
+              <div class="alerts-section-card">
+                <h4>Active Alerts</h4>
+                <div id="alerts-list" class="alerts-list">
+                  <!-- Populated dynamically via script.js -->
+                  <div class="alert-item">
+                    <p class="alert-desc">Loading crop alerts...</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Upcoming Events Card -->
+              <div class="alerts-section-card">
+                <h4>Upcoming Events</h4>
+                <div id="events-list" class="events-list">
+                  <!-- Populated dynamically via script.js -->
+                  <div class="event-item">
+                    <p class="event-desc">Loading farm events...</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

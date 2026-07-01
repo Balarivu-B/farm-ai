@@ -147,6 +147,56 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  // --- Crop-Specific Alerts and Events Database ---
+  const CROP_ALERTS = {
+    wheat: {
+      alerts: [
+        { title: "Yellow Rust Warning", type: "high-risk", desc: "High atmospheric humidity in the region increases the risk of yellow rust. Inspect Wheat fields daily and apply recommended propiconazole fungicide if symptoms appear." },
+        { title: "Watering Schedule Advisory", type: "warning", desc: "Wheat is entering the Crown Root Initiation (CRI) stage. This is a critical watering phase; ensure fields are adequately hydrated within 20-25 days of sowing." },
+        { title: "Market Price Alert", type: "info", desc: "Wholesale rates for Wheat (Sharbati) have climbed 4% in local mandis due to high demand. Good opportunity to sell excess yield." }
+      ],
+      events: [
+        { title: "Fertilizer Top-Dressing (Urea)", date: "July 12, 2026", desc: "Apply second dose of nitrogenous fertilizer before watering." },
+        { title: "Pest & Disease Field Survey", date: "July 18, 2026", desc: "Weekly inspection of plant stems and under-leaves for aphids." },
+        { title: "Regional Farmer Cooperative Meet", date: "July 24, 2026", desc: "Monthly discussion on crop insurance and collective grain pricing." }
+      ]
+    },
+    rice: {
+      alerts: [
+        { title: "Paddy Flooding Forecast", type: "warning", desc: "Heavy rains forecasted next week may lead to excess submergence. Check drainage channels in your paddy field to prevent lodging." },
+        { title: "Blast Disease Warning", type: "high-risk", desc: "Warm day temperatures and nighttime dew favor rice blast infestation. Spray blasticides if spot lesions appear on leaves." },
+        { title: "Electricity Subsidy Update", type: "info", desc: "Free farming power hours extended to 8 hours daily for paddy irrigation pumps." }
+      ],
+      events: [
+        { title: "Weed Control Treatment", date: "July 10, 2026", desc: "Apply pre-emergence herbicide to control broadleaf weeds." },
+        { title: "Irrigation Inspection", date: "July 15, 2026", desc: "Verify standing water levels of 5cm are maintained across paddies." },
+        { title: "Soil Health Sampling", date: "July 28, 2026", desc: "Collect soil samples post-tillering for nitrogen analysis." }
+      ]
+    },
+    maize: {
+      alerts: [
+        { title: "Fall Armyworm Alert", type: "high-risk", desc: "Active armyworm infestation reported in nearby maize fields. Check whorls of maize stalks immediately for caterpillar damage." },
+        { title: "Zinc Deficiency Warning", type: "warning", desc: "White striping noticed on upper leaves. Spray zinc sulfate mixture as directed by extension officers." },
+        { title: "Moisture Monitoring", type: "info", desc: "Tasseling phase is approaching. Maize requires steady watering; dry spells now can drop yields by up to 25%." }
+      ],
+      events: [
+        { title: "Nitrogen Side-Dressing", date: "July 14, 2026", desc: "Apply nitrogenous fertilizer alongside row channels when maize is knee-high." },
+        { title: "Whorl Inspection Walk", date: "July 20, 2026", desc: "Examine crop growth rate and check for early borer symptoms." },
+        { title: "Yield Estimation Assessment", date: "August 02, 2026", desc: "Measure ear density and kernel rows per ear for harvest forecast." }
+      ]
+    },
+    default: {
+      alerts: [
+        { title: "General Weather Advisory", type: "warning", desc: "Unseasonal showers predicted in parts of the district. Cover harvested produce or move it to dry storage sheds." },
+        { title: "Organic Fertilizer Promotion", type: "info", desc: "Get 50% discount on organic compost and bio-fertilizers at the block agricultural headquarters." }
+      ],
+      events: [
+        { title: "Soil Moisture Check", date: "July 12, 2026", desc: "Routine testing of root zone moisture before next irrigation cycle." },
+        { title: "Farm Maintenance Day", date: "July 20, 2026", desc: "Clean irrigation canals and repair boundary fences." }
+      ]
+    }
+  };
+
   const crops = ["wheat", "rice", "maize"];
   let currentCropIndex = 0;
 
@@ -253,6 +303,123 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnProfileLogout = document.getElementById("btn-profile-logout");
   const btnDownloadGuide = document.getElementById("btn-download-guide");
 
+  // Toast & Alerts elements
+  const toastContainer = document.getElementById("toast-container");
+  const btnSideAlerts = document.getElementById("btn-side-alerts");
+  const alertsList = document.getElementById("alerts-list");
+  const eventsList = document.getElementById("events-list");
+
+  // --- Toast Notification System ---
+  function showToast(message, type = "success", duration = 4000) {
+    if (!toastContainer) return;
+
+    // Create toast card
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+
+    // Choose icon based on type
+    let icon = "ℹ️";
+    if (type === "success") icon = "✔️";
+    else if (type === "error") icon = "❌";
+    else if (type === "warning") icon = "⚠️";
+
+    // Set structure
+    toast.innerHTML = `
+      <div class="toast-icon">${icon}</div>
+      <div class="toast-message">${message}</div>
+      <button class="toast-close" aria-label="Close notification">&times;</button>
+      <div class="toast-progress"></div>
+    `;
+
+    // Style the progress bar duration dynamically
+    const progressBar = toast.querySelector(".toast-progress");
+    if (progressBar) {
+      progressBar.style.animationDuration = `${duration}ms`;
+    }
+
+    // Append to container
+    toastContainer.appendChild(toast);
+
+    // Setup close button click
+    const closeBtn = toast.querySelector(".toast-close");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        dismissToast(toast);
+      });
+    }
+
+    // Auto dismiss
+    const autoDismissTimeout = setTimeout(() => {
+      dismissToast(toast);
+    }, duration);
+
+    // Helper to dismiss with slide-out animation
+    function dismissToast(toastEl) {
+      if (toastEl.classList.contains("fade-out")) return;
+      clearTimeout(autoDismissTimeout);
+      toastEl.classList.add("fade-out");
+      toastEl.addEventListener("animationend", (e) => {
+        if (e.animationName === "toastFadeOut") {
+          toastEl.remove();
+        }
+      });
+    }
+  }
+
+  // --- Dynamic Dashboard Alerts population ---
+  function updateDashboardAlerts(crop) {
+    if (!alertsList || !eventsList) return;
+
+    const cropKey = crop ? crop.toLowerCase().trim() : "default";
+    const data = CROP_ALERTS[cropKey] || CROP_ALERTS["default"];
+
+    // Populate Alerts
+    alertsList.innerHTML = "";
+    if (!data.alerts || data.alerts.length === 0) {
+      alertsList.innerHTML = `
+        <div class="alert-item">
+          <p class="alert-desc">No active alerts at this time.</p>
+        </div>
+      `;
+    } else {
+      data.alerts.forEach(alert => {
+        const item = document.createElement("div");
+        item.className = "alert-item";
+        item.innerHTML = `
+          <div class="alert-header">
+            <span class="alert-title">${alert.title}</span>
+            <span class="alert-tag ${alert.type}">${alert.type.replace("-", " ")}</span>
+          </div>
+          <p class="alert-desc">${alert.desc}</p>
+        `;
+        alertsList.appendChild(item);
+      });
+    }
+
+    // Populate Events
+    eventsList.innerHTML = "";
+    if (!data.events || data.events.length === 0) {
+      eventsList.innerHTML = `
+        <div class="event-item">
+          <p class="event-desc">No upcoming events scheduled.</p>
+        </div>
+      `;
+    } else {
+      data.events.forEach(event => {
+        const item = document.createElement("div");
+        item.className = "event-item";
+        item.innerHTML = `
+          <div class="event-header">
+            <span class="event-title">${event.title}</span>
+            <span class="event-date">${event.date}</span>
+          </div>
+          <p class="event-desc">${event.desc}</p>
+        `;
+        eventsList.appendChild(item);
+      });
+    }
+  }
+
   // --- Session Management ---
   function generateRegId() {
     const randomNum = Math.floor(100000 + Math.random() * 900000);
@@ -260,7 +427,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return `REG-${randomNum}`;
   }
 
-  function login(user) {
+  function login(user, showGreetingToast = false) {
     currentUser = user;
     
     // Update Greeting and Header buttons
@@ -281,9 +448,33 @@ document.addEventListener("DOMContentLoaded", () => {
     profileDisplayName.textContent = user.name;
     profileDisplayId.textContent = user.regId;
     profileDisplayCrop.textContent = user.crop.charAt(0).toUpperCase() + user.crop.slice(1);
+
+    // Load dynamic alerts
+    updateDashboardAlerts(user.crop);
+
+    // Show alert dot warning indicator when logging in
+    const alertDot = document.querySelector("#btn-side-alerts .badge-dot");
+    if (alertDot) {
+      alertDot.style.display = "inline-block";
+    }
+
+    // Reset sidebar selection to My Profile
+    const sidebarMenuItems = document.querySelectorAll(".sidebar-menu .menu-item");
+    const dashboardPanels = document.querySelectorAll(".dashboard-panel");
+    sidebarMenuItems.forEach(i => i.classList.remove("active"));
+    dashboardPanels.forEach(p => p.classList.remove("active"));
+    
+    const profileMenuBtn = document.querySelector('.sidebar-menu button[data-panel="panel-overview"]');
+    if (profileMenuBtn) profileMenuBtn.classList.add("active");
+    const profilePanel = document.getElementById("panel-overview");
+    if (profilePanel) profilePanel.classList.add("active");
+
+    if (showGreetingToast) {
+      showToast(`Welcome back, ${user.name}!`, "success");
+    }
   }
 
-  function logout() {
+  function logout(showToastFlag = false) {
     currentUser = null;
     deleteCookie("currentUser");
 
@@ -302,6 +493,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Generate new registration code for future signups
     generateRegId();
+
+    if (showToastFlag) {
+      showToast("Signed out of session successfully.", "info");
+    }
   }
 
   function initSession() {
@@ -310,12 +505,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (userCookie) {
       try {
         const user = JSON.parse(decodeURIComponent(userCookie));
-        login(user);
+        login(user, false);
       } catch (e) {
-        logout();
+        logout(false);
       }
     } else {
-      logout();
+      logout(false);
     }
   }
 
@@ -379,7 +574,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   if (btnResetSession) {
-    btnResetSession.addEventListener("click", logout);
+    btnResetSession.addEventListener("click", () => logout(true));
   }
 
   // --- Crop Directory Slider & Details ---
@@ -391,7 +586,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Only advance slide if the landing view is currently visible
       if (landingView && !landingView.classList.contains("hidden-view")) {
         let nextIndex = (currentCropIndex + 1) % crops.length;
-        updateCropSlider(nextIndex);
+        updateCropSlider(nextIndex, false);
       }
     }, 4500);
   }
@@ -403,7 +598,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function updateCropSlider(index) {
+  function updateCropSlider(index, showToastFlag = false) {
     currentCropIndex = index;
     const cropKey = crops[index];
     
@@ -429,24 +624,28 @@ document.addEventListener("DOMContentLoaded", () => {
       detailSoil.textContent = cropInfo.soil;
       detailHarvest.textContent = cropInfo.harvest;
       detailDescription.textContent = cropInfo.description;
+
+      if (showToastFlag) {
+        showToast(`Loaded details for ${cropKey.charAt(0).toUpperCase() + cropKey.slice(1)}`, "info");
+      }
     }
   }
 
   btnNext.addEventListener("click", () => {
     let nextIndex = (currentCropIndex + 1) % crops.length;
-    updateCropSlider(nextIndex);
+    updateCropSlider(nextIndex, true);
     startAutoPlay(); // Reset timer on interaction
   });
 
   btnPrev.addEventListener("click", () => {
     let prevIndex = (currentCropIndex - 1 + crops.length) % crops.length;
-    updateCropSlider(prevIndex);
+    updateCropSlider(prevIndex, true);
     startAutoPlay(); // Reset timer on interaction
   });
 
   cropCards.forEach((card, idx) => {
     card.addEventListener("click", () => {
-      updateCropSlider(idx);
+      updateCropSlider(idx, true);
       startAutoPlay(); // Reset timer on interaction
     });
   });
@@ -548,7 +747,10 @@ document.addEventListener("DOMContentLoaded", () => {
       hasErrors = true;
     }
 
-    if (hasErrors) return;
+    if (hasErrors) {
+      showToast("Please check the form for validation errors.", "warning");
+      return;
+    }
 
     // Retrieve registered list from cookies
     const registeredUsers = getRegisteredUsersFromCookies();
@@ -558,6 +760,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (userExists) {
       errEmail.textContent = "This email is already registered.";
       errEmail.style.display = "block";
+      showToast("This email is already registered.", "error");
       return;
     }
 
@@ -585,7 +788,8 @@ document.addEventListener("DOMContentLoaded", () => {
     regAgree.checked = false;
 
     // Log in
-    login(newUser);
+    login(newUser, false);
+    showToast(`Registration successful! Welcome, ${newUser.name}.`, "success");
   });
 
   // Login Form
@@ -614,7 +818,10 @@ document.addEventListener("DOMContentLoaded", () => {
       hasErrors = true;
     }
 
-    if (hasErrors) return;
+    if (hasErrors) {
+      showToast("Please enter a valid name and email to log in.", "warning");
+      return;
+    }
 
     // Look up user in registered list stored in cookies
     const registeredUsers = getRegisteredUsersFromCookies();
@@ -628,16 +835,45 @@ document.addEventListener("DOMContentLoaded", () => {
       
       loginName.value = "";
       loginEmail.value = "";
-      login(matchedUser);
+      login(matchedUser, true);
     } else {
       errLoginEmail.textContent = "No registered farmer account found with these details. Please register first.";
       errLoginEmail.style.display = "block";
+      showToast("Account not found. Please register first.", "error");
     }
   });
 
   // --- Dashboard Actions ---
-  btnSideLogout.addEventListener("click", logout);
-  btnProfileLogout.addEventListener("click", logout);
+  btnSideLogout.addEventListener("click", () => logout(true));
+  btnProfileLogout.addEventListener("click", () => logout(true));
+
+  // --- Sidebar panel switching ---
+  const sidebarMenuItems = document.querySelectorAll(".sidebar-menu .menu-item");
+  const dashboardPanels = document.querySelectorAll(".dashboard-panel");
+
+  sidebarMenuItems.forEach(item => {
+    if (item.classList.contains("logout-btn")) return;
+
+    item.addEventListener("click", () => {
+      sidebarMenuItems.forEach(i => i.classList.remove("active"));
+      dashboardPanels.forEach(p => p.classList.remove("active"));
+
+      item.classList.add("active");
+      const panelId = item.getAttribute("data-panel");
+      const targetPanel = document.getElementById(panelId);
+      if (targetPanel) {
+        targetPanel.classList.add("active");
+      }
+
+      // Hide the alert dot once user views the Crop Alerts page
+      if (panelId === "panel-alerts") {
+        const dot = item.querySelector(".badge-dot");
+        if (dot) {
+          dot.style.display = "none";
+        }
+      }
+    });
+  });
 
   // --- Personal Guide Document Downloader ---
   btnDownloadGuide.addEventListener("click", () => {
@@ -705,6 +941,8 @@ Green Valley Tech Park, Suite 402, India
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(downloadUrl);
+
+    showToast(`Farming guide downloaded successfully!`, "success");
   });
 
   // --- Initialize App ---
