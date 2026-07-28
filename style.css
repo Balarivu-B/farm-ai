@@ -1,0 +1,346 @@
+/* Universal Base Theme Configuration */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #051911;
+    color: #ffffff;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* Header Navigation Bar Layout */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 80px;
+    width: 100%;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-icon {
+    color: #a3e635;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+}
+
+.logo-text {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+nav a:hover, nav a.active {
+    color: #00cc88;
+}
+
+nav a.active {
+    position: relative;
+}
+
+nav a.active::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #00cc88;
+}
+
+.auth-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.welcome-text {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.btn-auth {
+    background-color: #00cc88;
+    color: #051911;
+    padding: 8px 18px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: opacity 0.3s ease;
+}
+
+.btn-auth:hover {
+    opacity: 0.9;
+}
+
+/* Content Frame Wrappers */
+.hero-section, .content-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 20px;
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.badge {
+    border: 1px solid #14532d;
+    background-color: rgba(20, 83, 45, 0.2);
+    color: #00cc88;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+}
+
+.hero-title, .section-title {
+    font-size: 56px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    letter-spacing: -0.5px;
+}
+
+.section-title {
+    font-size: 40px;
+}
+
+.text-green {
+    color: #00cc88;
+}
+
+.text-yellow {
+    color: #facc15;
+}
+
+.hero-description, .section-description {
+    color: #94a3b8;
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 650px;
+    margin-bottom: 40px;
+}
+
+/* Buttons Core Blueprint */
+.cta-container {
+    display: flex;
+    gap: 20px;
+}
+
+.btn {
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #00cc88;
+    color: #051911;
+    box-shadow: 0 0 20px rgba(0, 204, 136, 0.3);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 0 30px rgba(0, 204, 136, 0.5);
+    opacity: 0.95;
+}
+
+.btn-secondary {
+    border: 1px solid #334155;
+    color: #ffffff;
+    background-color: transparent;
+}
+
+.btn-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-color: #475569;
+}
+
+/* Base Form Element Design */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+    max-width: 500px;
+    margin-top: 20px;
+}
+
+input, textarea {
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid #1e293b;
+    padding: 14px;
+    border-radius: 6px;
+    color: white;
+    font-size: 14px;
+    outline: none;
+    width: 100%;
+}
+
+input:focus, textarea:focus {
+    border-color: #00cc88;
+}
+
+/* Content Grid / Cards Layouts */
+.grid-container {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    width: 100%;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid #14532d;
+    padding: 30px;
+    border-radius: 12px;
+    text-align: left;
+    flex: 1;
+    min-width: 250px;
+    max-width: 380px;
+}
+
+.card h3 {
+    color: #00cc88;
+    margin-bottom: 12px;
+    font-size: 20px;
+}
+
+.card p {
+    color: #94a3b8;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* Tab Switching Account Component */
+.auth-card {
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid #14532d;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 440px;
+    overflow: hidden;
+    margin: 40px auto;
+    text-align: left;
+}
+
+.auth-tabs {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid #14532d;
+}
+
+.tab-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    padding: 16px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.tab-btn.active {
+    color: #00cc88;
+    background-color: rgba(5, 25, 17, 0.5);
+    position: relative;
+}
+
+.tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #00cc88;
+}
+
+.auth-form-container {
+    display: none;
+    padding: 40px 30px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.auth-form-container.active-form {
+    display: flex;
+}
+
+.auth-form-container h2 {
+    font-size: 24px;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.auth-form-container form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Responsive UI Breakpoints */
+@media (max-width: 768px) {
+    header {
+        padding: 20px 40px;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .hero-title {
+        font-size: 36px;
+    }
+    .cta-container {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+    }
+}

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmEase AI - Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <div class="logo-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 9.8a7 7 0 0 1-9 8.2z"></path>
+                    <path d="M9 22v-4h4"></path>
+                </svg>
+            </div>
+            <span class="logo-text">FarmEase AI</span>
+        </div>
+        
+        <nav id="main-nav">
+            <a href="dashboard.html" class="active">Dashboard</a>
+        </nav>
+
+        <div class="auth-container">
+            <span class="welcome-text">Welcome, Farmer</span>
+            <a href="index.html" class="btn-auth" style="background-color: #ef4444; color: white;">Logout</a>
+        </div>
+    </header>
+
+    <main class="content-section">
+        <div class="badge">Analytics Hub</div>
+        <h1 class="hero-title">Your Live <span class="text-green">Crop Overview</span></h1>
+        <p class="hero-description">Real-time health telemetry and environmental predictive metrics for your plots.</p>
+
+        <!-- Interactive Calculator Integration Block -->
+        <div class="card" style="max-width: 500px; margin: 0 auto 40px auto; text-align: center; width: 100%;">
+            <h3>Yield Target Simulator</h3>
+            <p style="margin-bottom: 15px;">Estimate your target harvest output based on field area sizing variables.</p>
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <input type="number" id="calc-acres" placeholder="Enter Field Size (Acres)" min="1" required style="text-align: center;">
+                <button type="button" id="btn-simulate" class="btn btn-primary" style="padding: 10px 20px;">Calculate</button>
+            </div>
+            <p id="calc-result" class="text-yellow" style="font-weight: 600; font-size: 15px; min-height: 22px;"></p>
+        </div>
+
+        <div class="grid-container">
+            <div class="card">
+                <h3>Soil Moisture</h3>
+                <p class="text-yellow" style="font-size: 24px; font-weight: bold; margin: 10px 0;">42%</p>
+                <p>Optimal range maintained. Next irrigation sequence scheduled in 3 hours.</p>
+            </div>
+            <div class="card">
+                <h3>NPK Nutrient Levels</h3>
+                <p class="text-green" style="font-size: 24px; font-weight: bold; margin: 10px 0;">Stable</p>
+                <p>Nitrogen and Potassium mixes match baseline soil maps perfectly.</p>
+            </div>
+            <div class="card">
+                <h3>Weather Risk</h3>
+                <p style="color: #60a5fa; font-size: 24px; font-weight: bold; margin: 10px 0;">Low</p>
+                <p>No sudden pathology variations or storm risks detected for your region.</p>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
